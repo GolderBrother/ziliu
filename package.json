@@ -1,0 +1,44 @@
+{
+  "name": "ziliu",
+  "version": "1.0.0",
+  "description": "AI驱动的多平台内容智能发布与管理工具",
+  "private": true,
+  "author": "孟健",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm run dev:web",
+    "dev:web": "cd src/web && npm run dev",
+    "dev:server": "cd src/server && npm run dev",
+    "dev:extension": "cd src/extension && npm run dev",
+    "build": "npm run build:web && npm run build:server && npm run build:extension",
+    "build:web": "cd src/web && npm run build",
+    "build:server": "cd src/server && npm run build",
+    "build:extension": "cd src/extension && npm run build",
+    "install:all": "npm install && npm run install:web && npm run install:server && npm run install:extension",
+    "install:web": "cd src/web && npm install",
+    "install:server": "cd src/server && npm install",
+    "install:extension": "cd src/extension && npm install"
+  },
+  "workspaces": [
+    "src/web",
+    "src/server",
+    "src/extension"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "content-publishing",
+    "multi-platform",
+    "ai",
+    "wechat",
+    "zhihu",
+    "juejin",
+    "xiaohongshu"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GolderBrother/ziliu.git"
+  }
+}
