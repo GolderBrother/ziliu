@@ -1,0 +1,32 @@
+{
+  "name": "ZiLiu Assistant",
+  "description": "ZiLiu one-click content filler across multiple platforms",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "ZiLiu"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://mp.weixin.qq.com/*",
+    "https://juejin.cn/*",
+    "https://www.zhihu.com/*",
+    "https://*.xiaohongshu.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["contentScripts/index.ts"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  }
+}
