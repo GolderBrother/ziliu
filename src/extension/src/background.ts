@@ -1,0 +1,1 @@
+console.log('ZiLiu extension background running');
