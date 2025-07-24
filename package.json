@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AI驱动的多平台内容智能发布与管理工具",
   "private": true,
-  "author": "孟健",
+  "author": "jameszhang",
   "license": "MIT",
   "scripts": {
     "dev": "npm run dev:web",
