@@ -17,9 +17,8 @@ import {
   Clock,
   TrendingUp,
   Plus,
-  Sparkles,
-  Target,
-  Zap
+  FileUp,
+  Archive
 } from "lucide-react"
 
 interface DashboardProps {
@@ -27,30 +26,41 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
+  const handleNavigate = (page: string) => {
+    if (onNavigate) {
+      onNavigate(page)
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
+      <header className="bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
               <Edit3 className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
-              字流
-            </span>
+            <span className="text-2xl font-bold text-gray-900">字流</span>
           </div>
           
           <div className="flex items-center space-x-4">
-            <Avatar className="ring-2 ring-purple-200">
-              <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold">jameszhang</AvatarFallback>
-            </Avatar>
-            <span className="font-medium text-gray-700">jameszhang</span>
-            <Button variant="ghost" size="sm" className="hover:bg-purple-50">
+            <div className="flex items-center space-x-3">
+              <Avatar className="w-10 h-10">
+                <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                  孟健
+                </AvatarFallback>
+              </Avatar>
+              <div className="hidden md:block">
+                <div className="text-sm font-medium text-gray-900">孟健</div>
+                <div className="text-xs text-gray-500">免费版用户</div>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm">
               <Settings className="w-4 h-4 mr-2" />
               设置
             </Button>
-            <Button variant="ghost" size="sm" className="hover:bg-red-50 hover:text-red-600">
+            <Button variant="ghost" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
               退出
             </Button>
@@ -61,48 +71,48 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">欢迎回来，jameszhang！</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">欢迎回来，孟健</h1>
           <p className="text-gray-600">继续您的创作之旅，让文字如流水般顺畅发布</p>
         </div>
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card 
-            className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-dashed border-cyan-200 hover:border-cyan-400 bg-gradient-to-br from-cyan-50 to-blue-50 hover:scale-105"
-            onClick={() => onNavigate?.('editor')}
+            className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-dashed border-blue-200 hover:border-blue-400 bg-blue-50/50"
+            onClick={() => handleNavigate('editor')}
           >
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/25">
-                <Plus className="w-10 h-10 text-white" />
+              <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Plus className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">新建文章</h3>
-              <p className="text-gray-600">开始创作新的精彩内容</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">新建文章</h3>
+              <p className="text-gray-600">开始创作新的内容</p>
             </CardContent>
           </Card>
 
           <Card 
-            className="group hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105 bg-gradient-to-br from-green-50 to-emerald-50"
-            onClick={() => onNavigate?.('import')}
+            className="cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300"
+            onClick={() => handleNavigate('import')}
           >
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-green-500/25">
-                <Upload className="w-10 h-10 text-white" />
+              <div className="w-16 h-16 bg-cyan-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <FileUp className="w-8 h-8 text-cyan-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">导入文档</h3>
-              <p className="text-gray-600">从Word或Markdown快速导入</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">导入文档</h3>
+              <p className="text-gray-600">从Word、Markdown导入</p>
             </CardContent>
           </Card>
 
           <Card 
-            className="group hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105 bg-gradient-to-br from-purple-50 to-pink-50"
-            onClick={() => onNavigate?.('history')}
+            className="cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300"
+            onClick={() => handleNavigate('history')}
           >
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/25">
-                <History className="w-10 h-10 text-white" />
+              <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Archive className="w-8 h-8 text-gray-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">历史文章</h3>
-              <p className="text-gray-600">查看所有创作内容</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">历史文章</h3>
+              <p className="text-gray-600">查看所有文章</p>
             </CardContent>
           </Card>
         </div>
@@ -110,109 +120,126 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Recent Articles */}
           <div className="lg:col-span-2">
-            <Card className="shadow-xl bg-white/80 backdrop-blur-sm border-0">
-              <CardHeader className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-t-lg">
-                <CardTitle className="flex items-center justify-between text-xl">
-                  <span className="flex items-center">
-                    <FileText className="w-6 h-6 mr-2 text-blue-600" />
-                    最近文章
-                  </span>
-                  <Button variant="outline" size="sm" className="hover:bg-blue-50">查看全部</Button>
+            <Card className="shadow-sm border border-gray-200">
+              <CardHeader>
+                <CardTitle className="flex items-center text-gray-900">
+                  <FileText className="w-5 h-5 mr-2 text-blue-600" />
+                  最近文章
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-bold text-xl text-gray-800">如何使用AI提升写作效率</h3>
-                    <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">草稿</Badge>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600 mb-4">
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>2小时前</span>
-                    <span className="mx-2">·</span>
-                    <FileText className="w-4 h-4 mr-1" />
-                    <span>1,235字</span>
-                    <span className="mx-2">·</span>
-                    <Target className="w-4 h-4 mr-1" />
-                    <span>预计阅读 5分钟</span>
+              <CardContent className="space-y-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">如何使用AI提升写作效率</h3>
+                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <span className="flex items-center">
+                          <Clock className="w-4 h-4 mr-1" />
+                          2小时前
+                        </span>
+                        <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">草稿</Badge>
+                        <span>1,235字</span>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex space-x-3">
                     <Button 
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
-                      onClick={() => onNavigate?.('editor')}
+                      size="sm" 
+                      className="bg-blue-600 hover:bg-blue-700"
+                      onClick={() => handleNavigate('editor')}
                     >
-                      <Edit3 className="w-4 h-4 mr-2" />
                       继续编辑
                     </Button>
-                    <Button variant="outline" className="hover:bg-blue-50">
-                      <Eye className="w-4 h-4 mr-2" />
+                    <Button variant="outline" size="sm">
+                      <Eye className="w-4 h-4 mr-1" />
                       预览
                     </Button>
-                    <Button variant="outline" className="hover:bg-green-50">
-                      <Share2 className="w-4 h-4 mr-2" />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleNavigate('publish')}
+                    >
+                      <Share2 className="w-4 h-4 mr-1" />
                       发布
                     </Button>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-bold text-xl text-gray-800">ChatGPT实战技巧分享</h3>
-                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">已发布</Badge>
+                <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">ChatGPT实战技巧分享</h3>
+                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <span className="flex items-center">
+                          <Clock className="w-4 h-4 mr-1" />
+                          昨天
+                        </span>
+                        <Badge className="bg-green-100 text-green-800">已发布</Badge>
+                        <span>公众号、知乎、掘金</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600 mb-2">
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>昨天</span>
-                    <span className="mx-2">·</span>
-                    <span className="flex items-center">
-                      <Share2 className="w-4 h-4 mr-1" />
-                      公众号、知乎、掘金
-                    </span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600 mb-4">
-                    <TrendingUp className="w-4 h-4 mr-1 text-green-600" />
-                    <span className="font-semibold text-green-700">阅读：2.3k / 458 / 892</span>
-                    <span className="mx-2">·</span>
-                    <Sparkles className="w-4 h-4 mr-1 text-purple-600" />
-                    <span className="text-purple-700">表现优秀</span>
+                  <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="font-semibold text-gray-900">2.3k</div>
+                      <div className="text-gray-600">公众号阅读</div>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="font-semibold text-gray-900">458</div>
+                      <div className="text-gray-600">知乎阅读</div>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="font-semibold text-gray-900">892</div>
+                      <div className="text-gray-600">掘金阅读</div>
+                    </div>
                   </div>
                   <div className="flex space-x-3">
-                    <Button variant="outline" className="hover:bg-blue-50">
-                      <BarChart3 className="w-4 h-4 mr-2" />
+                    <Button variant="outline" size="sm">
+                      <BarChart3 className="w-4 h-4 mr-1" />
                       查看数据
                     </Button>
-                    <Button variant="outline" className="hover:bg-purple-50">
-                      <Copy className="w-4 h-4 mr-2" />
+                    <Button variant="outline" size="sm">
+                      <Copy className="w-4 h-4 mr-1" />
                       复制新文章
                     </Button>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-bold text-xl text-gray-800">Cursor编程入门指南</h3>
-                    <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">已发布</Badge>
+                <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Cursor编程入门指南</h3>
+                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <span className="flex items-center">
+                          <Clock className="w-4 h-4 mr-1" />
+                          3天前
+                        </span>
+                        <Badge className="bg-green-100 text-green-800">已发布</Badge>
+                        <span>全平台</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600 mb-2">
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>3天前</span>
-                    <span className="mx-2">·</span>
-                    <span className="flex items-center">
-                      <Share2 className="w-4 h-4 mr-1" />
-                      公众号、掘金
-                    </span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600 mb-4">
-                    <TrendingUp className="w-4 h-4 mr-1 text-blue-600" />
-                    <span className="font-semibold text-blue-700">阅读：1.8k / 623</span>
+                  <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="font-semibold text-gray-900">1.8k</div>
+                      <div className="text-gray-600">总阅读量</div>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="font-semibold text-gray-900">156</div>
+                      <div className="text-gray-600">点赞数</div>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="font-semibold text-gray-900">23</div>
+                      <div className="text-gray-600">评论数</div>
+                    </div>
                   </div>
                   <div className="flex space-x-3">
-                    <Button variant="outline" className="hover:bg-blue-50">
-                      <BarChart3 className="w-4 h-4 mr-2" />
+                    <Button variant="outline" size="sm">
+                      <BarChart3 className="w-4 h-4 mr-1" />
                       查看数据
                     </Button>
-                    <Button variant="outline" className="hover:bg-purple-50">
-                      <Copy className="w-4 h-4 mr-2" />
+                    <Button variant="outline" size="sm">
+                      <Copy className="w-4 h-4 mr-1" />
                       复制新文章
                     </Button>
                   </div>
@@ -221,104 +248,100 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
             </Card>
           </div>
 
-          {/* Stats & Upgrade */}
+          {/* Sidebar */}
           <div className="space-y-6">
             {/* Stats Card */}
-            <Card className="shadow-xl bg-gradient-to-br from-white to-blue-50 border-0">
-              <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg">
-                <CardTitle className="flex items-center">
-                  <BarChart3 className="w-5 h-5 mr-2" />
+            <Card className="shadow-sm border border-gray-200">
+              <CardHeader>
+                <CardTitle className="flex items-center text-gray-900">
+                  <BarChart3 className="w-5 h-5 mr-2 text-blue-600" />
                   本月数据
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl">
-                    <div className="text-3xl font-bold text-cyan-600 mb-1">12</div>
-                    <div className="text-sm text-gray-600">发布文章</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
-                    <div className="text-3xl font-bold text-green-600 mb-1">4.5h</div>
-                    <div className="text-sm text-gray-600">节省时间</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
-                    <div className="text-3xl font-bold text-purple-600 mb-1">28.6k</div>
-                    <div className="text-sm text-gray-600">总阅读量</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl">
-                    <div className="text-3xl font-bold text-orange-600 mb-1">3</div>
-                    <div className="text-sm text-gray-600">平台覆盖</div>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">发布文章</span>
+                  <span className="text-2xl font-bold text-blue-600">12篇</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">节省时间</span>
+                  <span className="text-2xl font-bold text-cyan-600">4.5小时</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">总阅读量</span>
+                  <span className="text-2xl font-bold text-gray-900">28.6k</span>
+                </div>
+                <div className="pt-4 border-t border-gray-200">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <TrendingUp className="w-4 h-4 mr-2 text-green-500" />
+                    相比上月提升 23%
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Upgrade Card */}
-            <Card className="shadow-2xl bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 border-2 border-yellow-300">
-              <CardHeader className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-t-lg">
-                <CardTitle className="flex items-center">
-                  <Crown className="w-6 h-6 mr-2" />
-                  升级专业版
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <p className="text-gray-700 font-medium">
-                  解锁AI功能，提升创作效率
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center p-3 bg-white/80 rounded-lg">
-                    <div className="w-3 h-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mr-3"></div>
-                    <span className="font-medium">AI标题优化</span>
-                    <Sparkles className="w-4 h-4 ml-auto text-yellow-600" />
+            <Card className="shadow-sm border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50">
+              <CardContent className="p-6">
+                <div className="text-center mb-4">
+                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <Crown className="w-6 h-6 text-white" />
                   </div>
-                  <div className="flex items-center p-3 bg-white/80 rounded-lg">
-                    <div className="w-3 h-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mr-3"></div>
-                    <span className="font-medium">智能摘要生成</span>
-                    <Zap className="w-4 h-4 ml-auto text-yellow-600" />
+                  <h3 className="font-semibold text-gray-900 mb-2">升级专业版</h3>
+                  <p className="text-sm text-gray-600 mb-4">解锁AI功能，提升创作效率</p>
+                </div>
+                
+                <div className="space-y-3 mb-6 text-sm">
+                  <div className="flex items-center text-gray-700">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
+                    AI标题优化
                   </div>
-                  <div className="flex items-center p-3 bg-white/80 rounded-lg">
-                    <div className="w-3 h-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mr-3"></div>
-                    <span className="font-medium">小红书风格改写</span>
-                    <Edit3 className="w-4 h-4 ml-auto text-yellow-600" />
+                  <div className="flex items-center text-gray-700">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
+                    智能摘要生成
                   </div>
-                  <div className="flex items-center p-3 bg-white/80 rounded-lg">
-                    <div className="w-3 h-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mr-3"></div>
-                    <span className="font-medium">20+专业排版样式</span>
-                    <FileText className="w-4 h-4 ml-auto text-yellow-600" />
+                  <div className="flex items-center text-gray-700">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
+                    小红书风格改写
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
+                    20+专业样式
                   </div>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-3 shadow-lg">
-                  <Crown className="w-5 h-5 mr-2" />
-                  立即升级专业版
+                
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  立即升级 ¥19.9/月
                 </Button>
-                <div className="text-center">
-                  <p className="text-sm text-gray-600">首月仅需</p>
-                  <p className="text-2xl font-bold text-orange-600">¥9.9</p>
-                </div>
               </CardContent>
             </Card>
 
-            {/* Quick Tips */}
-            <Card className="shadow-xl bg-gradient-to-br from-indigo-50 to-purple-50 border-0">
+            {/* Quick Links */}
+            <Card className="shadow-sm border border-gray-200">
               <CardHeader>
-                <CardTitle className="flex items-center text-indigo-700">
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  使用技巧
-                </CardTitle>
+                <CardTitle className="text-gray-900">快速操作</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-start space-x-3 p-3 bg-white/80 rounded-lg">
-                  <div className="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-700">使用Markdown编写可以更好地适配各平台格式</span>
-                </div>
-                <div className="flex items-start space-x-3 p-3 bg-white/80 rounded-lg">
-                  <div className="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-700">安装Chrome插件可以一键填充内容到各平台</span>
-                </div>
-                <div className="flex items-start space-x-3 p-3 bg-white/80 rounded-lg">
-                  <div className="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-700">定期备份重要文章，避免意外丢失</span>
-                </div>
+              <CardContent className="space-y-3">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start hover:bg-blue-50"
+                  onClick={() => handleNavigate('featured')}
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  精选文章管理
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start hover:bg-blue-50"
+                  onClick={() => handleNavigate('publish')}
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  发布设置
+                </Button>
+                <Button variant="outline" className="w-full justify-start hover:bg-blue-50">
+                  <Settings className="w-4 h-4 mr-2" />
+                  账户设置
+                </Button>
               </CardContent>
             </Card>
           </div>

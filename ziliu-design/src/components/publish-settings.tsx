@@ -1,292 +1,153 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge"
+import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { 
   Share2, 
-  MessageCircle, 
-  BookOpen, 
-  Code, 
-  Heart,
-  Eye,
-  Settings,
-  Image,
-  Crown,
+  Settings, 
+  Eye, 
+  CheckCircle,
   RefreshCw,
   Wand2,
-  CheckCircle,
-  ArrowRight,
-  Sparkles,
+  Image as ImageIcon,
   Zap,
-  Target
+  Crown,
+  MessageSquare,
+  Users,
+  Globe,
+  Smartphone
 } from "lucide-react"
 
 export default function PublishSettings() {
-  const [selectedPlatforms, setSelectedPlatforms] = useState({
-    wechat: true,
-    zhihu: true,
-    juejin: true,
-    xiaohongshu: false
-  })
-  
+  const [selectedPlatforms, setSelectedPlatforms] = useState(["wechat", "zhihu", "juejin"])
+  const [selectedStyle, setSelectedStyle] = useState("default")
   const [selectedArticles, setSelectedArticles] = useState([
     "ChatGPT实战技巧分享",
     "提升效率的10个工具",
     "AI时代的内容创作"
   ])
 
-  const [wechatSettings, setWechatSettings] = useState({
-    style: "default",
-    author: "jameszhang",
-    original: true,
-    reward: true
-  })
-
-  const [imageSettings, setImageSettings] = useState({
-    autoCompress: true,
-    targetSize: "200KB",
-    watermark: true,
-    watermarkPosition: "bottom-right",
-    imageHost: "smms"
-  })
-
-  const recentArticles = [
-    { title: "ChatGPT实战技巧分享", date: "3天前", views: "2.3k" },
-    { title: "提升效率的10个工具", date: "1周前", views: "1.8k" },
-    { title: "AI时代的内容创作", date: "2周前", views: "3.2k" },
-    { title: "Cursor编程入门", date: "3周前", views: "2.1k" },
-    { title: "我的2024年度总结", date: "1月前", views: "5.6k" }
+  const platforms = [
+    { id: "wechat", name: "公众号", icon: MessageSquare, color: "green", free: true },
+    { id: "zhihu", name: "知乎", icon: Users, color: "blue", free: true },
+    { id: "juejin", name: "掘金", icon: Globe, color: "blue", free: true },
+    { id: "xiaohongshu", name: "小红书", icon: Smartphone, color: "red", free: false }
   ]
 
-  const togglePlatform = (platform: string) => {
-    setSelectedPlatforms(prev => ({
-      ...prev,
-      [platform]: !prev[platform as keyof typeof prev]
-    }))
-  }
+  const articles = [
+    { title: "ChatGPT实战技巧分享", views: "2.3k", selected: true },
+    { title: "提升效率的10个工具", views: "1.8k", selected: true },
+    { title: "AI时代的内容创作", views: "3.2k", selected: true },
+    { title: "Cursor编程入门", views: "2.1k", selected: false },
+    { title: "我的2024年度总结", views: "5.6k", selected: false }
+  ]
 
-  const toggleArticle = (article: string) => {
-    setSelectedArticles(prev => 
-      prev.includes(article)
-        ? prev.filter(a => a !== article)
-        : [...prev, article]
+  const togglePlatform = (platformId: string) => {
+    setSelectedPlatforms(prev => 
+      prev.includes(platformId)
+        ? prev.filter(id => id !== platformId)
+        : [...prev, platformId]
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center">
+            <Share2 className="w-10 h-10 mr-4 text-blue-600" />
             发布设置
           </h1>
-          <p className="text-gray-600 text-lg">配置您的多平台发布参数，一键发布到所有平台</p>
+          <p className="text-gray-600 text-lg">配置多平台发布参数，一键发布到所有平台</p>
         </div>
 
-        <div className="flex items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border-0">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25">
-              <Share2 className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">准备发布文章</h2>
-              <p className="text-gray-600">如何使用AI提升写作效率</p>
-            </div>
-          </div>
-          <div className="flex space-x-3">
-            <Button variant="outline" className="hover:bg-blue-50">
-              <Eye className="w-4 h-4 mr-2" />
-              预览各平台
-            </Button>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-purple-500/25">
-              <Share2 className="w-4 h-4 mr-2" />
-              开始发布
-            </Button>
-          </div>
-        </div>
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Platform Selection */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Platform Cards */}
+            <Card className="shadow-sm border border-gray-200">
+              <CardHeader className="bg-gray-50 border-b border-gray-200">
+                <CardTitle className="text-xl flex items-center text-gray-900">
+                  <Globe className="w-5 h-5 mr-2 text-blue-600" />
+                  选择发布平台
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  {platforms.map((platform) => (
+                    <Card 
+                      key={platform.id}
+                      className={`cursor-pointer transition-all duration-300 border-2 ${
+                        selectedPlatforms.includes(platform.id)
+                          ? 'border-blue-300 bg-blue-50 shadow-md'
+                          : 'border-gray-200 hover:border-gray-300'
+                      } ${!platform.free ? 'opacity-75' : ''}`}
+                      onClick={() => platform.free && togglePlatform(platform.id)}
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center">
+                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center mr-4 ${
+                              platform.color === 'green' ? 'bg-green-100' :
+                              platform.color === 'blue' ? 'bg-blue-100' :
+                              platform.color === 'red' ? 'bg-red-100' : 'bg-gray-100'
+                            }`}>
+                              <platform.icon className={`w-6 h-6 ${
+                                platform.color === 'green' ? 'text-green-600' :
+                                platform.color === 'blue' ? 'text-blue-600' :
+                                platform.color === 'red' ? 'text-red-600' : 'text-gray-600'
+                              }`} />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-900">{platform.name}</h3>
+                              <p className="text-sm text-gray-600">
+                                {platform.id === 'wechat' && '原文发布'}
+                                {platform.id === 'zhihu' && '原文发布'}
+                                {platform.id === 'juejin' && '原文发布'}
+                                {platform.id === 'xiaohongshu' && 'AI改写'}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            {!platform.free && (
+                              <Badge className="bg-blue-100 text-blue-800">
+                                <Crown className="w-3 h-3 mr-1" />
+                                专业版
+                              </Badge>
+                            )}
+                            <Checkbox 
+                              checked={selectedPlatforms.includes(platform.id)}
+                              disabled={!platform.free}
+                              className="data-[state=checked]:bg-blue-600"
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Platform Selection */}
-        <Card className="shadow-xl bg-white/90 backdrop-blur-sm border-0">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-t-lg">
-            <CardTitle className="text-2xl flex items-center">
-              <Target className="w-6 h-6 mr-3 text-blue-600" />
-              选择发布平台
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div 
-                className={`group cursor-pointer transition-all duration-300 ${
-                  selectedPlatforms.wechat 
-                    ? 'transform scale-105' 
-                    : 'hover:scale-105'
-                }`}
-                onClick={() => togglePlatform('wechat')}
-              >
-                <Card className={`border-2 transition-all duration-300 ${
-                  selectedPlatforms.wechat 
-                    ? 'border-green-400 bg-gradient-to-br from-green-50 to-emerald-50 shadow-xl shadow-green-500/20' 
-                    : 'border-gray-200 hover:border-green-300 hover:shadow-lg'
-                }`}>
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-                        selectedPlatforms.wechat 
-                          ? 'bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg shadow-green-500/25' 
-                          : 'bg-green-100'
-                      }`}>
-                        <MessageCircle className={`w-6 h-6 ${selectedPlatforms.wechat ? 'text-white' : 'text-green-600'}`} />
-                      </div>
-                      <Checkbox checked={selectedPlatforms.wechat} className="data-[state=checked]:bg-green-500" />
-                    </div>
-                    <h3 className="font-bold text-lg mb-2">公众号</h3>
-                    <p className="text-sm text-gray-600 mb-2">原文发布</p>
-                    {selectedPlatforms.wechat && (
-                      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        已选择
-                      </Badge>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div 
-                className={`group cursor-pointer transition-all duration-300 ${
-                  selectedPlatforms.zhihu 
-                    ? 'transform scale-105' 
-                    : 'hover:scale-105'
-                }`}
-                onClick={() => togglePlatform('zhihu')}
-              >
-                <Card className={`border-2 transition-all duration-300 ${
-                  selectedPlatforms.zhihu 
-                    ? 'border-blue-400 bg-gradient-to-br from-blue-50 to-cyan-50 shadow-xl shadow-blue-500/20' 
-                    : 'border-gray-200 hover:border-blue-300 hover:shadow-lg'
-                }`}>
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-                        selectedPlatforms.zhihu 
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/25' 
-                          : 'bg-blue-100'
-                      }`}>
-                        <BookOpen className={`w-6 h-6 ${selectedPlatforms.zhihu ? 'text-white' : 'text-blue-600'}`} />
-                      </div>
-                      <Checkbox checked={selectedPlatforms.zhihu} className="data-[state=checked]:bg-blue-500" />
-                    </div>
-                    <h3 className="font-bold text-lg mb-2">知乎</h3>
-                    <p className="text-sm text-gray-600 mb-2">原文发布</p>
-                    {selectedPlatforms.zhihu && (
-                      <Badge className="bg-gradient-to-r from-blue-500 to-cyan-500">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        已选择
-                      </Badge>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div 
-                className={`group cursor-pointer transition-all duration-300 ${
-                  selectedPlatforms.juejin 
-                    ? 'transform scale-105' 
-                    : 'hover:scale-105'
-                }`}
-                onClick={() => togglePlatform('juejin')}
-              >
-                <Card className={`border-2 transition-all duration-300 ${
-                  selectedPlatforms.juejin 
-                    ? 'border-blue-400 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-xl shadow-blue-500/20' 
-                    : 'border-gray-200 hover:border-blue-300 hover:shadow-lg'
-                }`}>
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-                        selectedPlatforms.juejin 
-                          ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/25' 
-                          : 'bg-blue-100'
-                      }`}>
-                        <Code className={`w-6 h-6 ${selectedPlatforms.juejin ? 'text-white' : 'text-blue-600'}`} />
-                      </div>
-                      <Checkbox checked={selectedPlatforms.juejin} className="data-[state=checked]:bg-blue-500" />
-                    </div>
-                    <h3 className="font-bold text-lg mb-2">掘金</h3>
-                    <p className="text-sm text-gray-600 mb-2">原文发布</p>
-                    {selectedPlatforms.juejin && (
-                      <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        已选择
-                      </Badge>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div 
-                className={`group cursor-pointer transition-all duration-300 relative ${
-                  selectedPlatforms.xiaohongshu 
-                    ? 'transform scale-105' 
-                    : 'hover:scale-105'
-                }`}
-                onClick={() => togglePlatform('xiaohongshu')}
-              >
-                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-500 to-orange-500 z-10">
-                  <Crown className="w-3 h-3 mr-1" />
-                  专业版
-                </Badge>
-                <Card className={`border-2 transition-all duration-300 ${
-                  selectedPlatforms.xiaohongshu 
-                    ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-rose-50 shadow-xl shadow-pink-500/20' 
-                    : 'border-gray-200 hover:border-pink-300 hover:shadow-lg'
-                }`}>
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-                        selectedPlatforms.xiaohongshu 
-                          ? 'bg-gradient-to-r from-pink-500 to-rose-600 shadow-lg shadow-pink-500/25' 
-                          : 'bg-pink-100'
-                      }`}>
-                        <Heart className={`w-6 h-6 ${selectedPlatforms.xiaohongshu ? 'text-white' : 'text-pink-600'}`} />
-                      </div>
-                      <Checkbox checked={selectedPlatforms.xiaohongshu} className="data-[state=checked]:bg-pink-500" />
-                    </div>
-                    <h3 className="font-bold text-lg mb-2">小红书</h3>
-                    <p className="text-sm text-gray-600 mb-2">AI改写</p>
-                    {selectedPlatforms.xiaohongshu && (
-                      <Badge className="bg-gradient-to-r from-pink-500 to-rose-500">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        已选择
-                      </Badge>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* WeChat Settings */}
-          <Card className="shadow-xl bg-white/90 backdrop-blur-sm border-0">
-            <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg">
-              <CardTitle className="flex items-center text-xl">
-                <MessageCircle className="w-6 h-6 mr-3 text-green-600" />
-                公众号设置
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+            {/* WeChat Settings */}
+            <Card className="shadow-sm border border-gray-200">
+              <CardHeader className="bg-gray-50 border-b border-gray-200">
+                <CardTitle className="text-xl flex items-center text-gray-900">
+                  <MessageSquare className="w-5 h-5 mr-2 text-green-600" />
+                  公众号设置
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                {/* Style Selection */}
                 <div>
-                  <Label className="text-sm font-medium text-gray-700">排版样式</Label>
-                  <Select value={wechatSettings.style} onValueChange={(value) => setWechatSettings(prev => ({ ...prev, style: value }))}>
-                    <SelectTrigger className="mt-2 bg-white/80">
+                  <label className="text-sm font-medium text-gray-700 mb-3 block">排版样式</label>
+                  <Select value={selectedStyle} onValueChange={setSelectedStyle}>
+                    <SelectTrigger className="w-full bg-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -297,252 +158,244 @@ export default function PublishSettings() {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
+                {/* Author Settings */}
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">作者</label>
+                    <Select defaultValue="mengjian">
+                      <SelectTrigger className="bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mengjian">孟健</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch id="original" defaultChecked />
+                    <label htmlFor="original" className="text-sm font-medium text-gray-700">
+                      原创声明
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch id="reward" defaultChecked />
+                    <label htmlFor="reward" className="text-sm font-medium text-gray-700">
+                      开启赞赏
+                    </label>
+                  </div>
+                </div>
+
+                {/* Featured Articles */}
                 <div>
-                  <Label className="text-sm font-medium text-gray-700">作者</Label>
-                  <Input 
-                    value={wechatSettings.author} 
-                    onChange={(e) => setWechatSettings(prev => ({ ...prev, author: e.target.value }))}
-                    className="mt-2 bg-white/80"
+                  <div className="flex items-center justify-between mb-4">
+                    <label className="text-sm font-medium text-gray-700">精选推荐</label>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="sm" className="hover:bg-gray-100">
+                        <RefreshCw className="w-4 h-4 mr-1" />
+                        刷新列表
+                      </Button>
+                      <Button variant="outline" size="sm" className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                        <Wand2 className="w-4 h-4 mr-1" />
+                        智能推荐
+                        <Badge className="ml-1 bg-blue-100 text-blue-800 text-xs">专业版</Badge>
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <Card className="border border-gray-200">
+                    <CardContent className="p-4">
+                      <div className="text-sm text-gray-600 mb-3">从公众号历史文章中选择（最近30篇）</div>
+                      <div className="space-y-3 max-h-48 overflow-y-auto">
+                        {articles.map((article, index) => (
+                          <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center space-x-3">
+                              <Checkbox 
+                                checked={article.selected}
+                                className="data-[state=checked]:bg-blue-600"
+                              />
+                              <div>
+                                <div className="font-medium text-gray-900">{article.title}</div>
+                                <div className="text-sm text-gray-600">{article.views} 阅读</div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Traffic Template */}
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-3 block">引流文案</label>
+                  <div className="flex items-center space-x-3 mb-3">
+                    <Select defaultValue="default">
+                      <SelectTrigger className="w-48 bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="default">默认模板</SelectItem>
+                        <SelectItem value="tech">技术类模板</SelectItem>
+                        <SelectItem value="growth">成长类模板</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" size="sm">编辑</Button>
+                  </div>
+                  <Textarea 
+                    className="bg-white"
+                    placeholder="在这里编辑引流文案..."
+                    defaultValue="关注我，获取更多优质内容分享！"
                   />
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl">
-                <div>
-                  <Label className="text-sm font-medium text-gray-800">原创声明</Label>
-                  <p className="text-xs text-gray-600">标记为原创内容</p>
-                </div>
-                <Switch 
-                  checked={wechatSettings.original}
-                  onCheckedChange={(checked) => setWechatSettings(prev => ({ ...prev, original: checked }))}
-                />
-              </div>
-
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
-                <div>
-                  <Label className="text-sm font-medium text-gray-800">开启赞赏</Label>
-                  <p className="text-xs text-gray-600">允许读者赞赏</p>
-                </div>
-                <Switch 
-                  checked={wechatSettings.reward}
-                  onCheckedChange={(checked) => setWechatSettings(prev => ({ ...prev, reward: checked }))}
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <Label className="text-sm font-medium text-gray-800">精选推荐</Label>
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" className="hover:bg-blue-50">
-                      <RefreshCw className="w-4 h-4 mr-1" />
-                      刷新列表
-                    </Button>
-                    <Button variant="outline" size="sm" className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
-                      <Wand2 className="w-4 h-4 mr-1" />
-                      智能推荐
-                    </Button>
+            {/* Image Processing */}
+            <Card className="shadow-sm border border-gray-200">
+              <CardHeader className="bg-gray-50 border-b border-gray-200">
+                <CardTitle className="text-xl flex items-center text-gray-900">
+                  <ImageIcon className="w-5 h-5 mr-2 text-cyan-600" />
+                  图片处理
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="text-sm font-medium text-gray-700">自动压缩</label>
+                      <Switch defaultChecked />
+                    </div>
+                    <Select defaultValue="200kb">
+                      <SelectTrigger className="bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="100kb">100KB</SelectItem>
+                        <SelectItem value="200kb">200KB</SelectItem>
+                        <SelectItem value="500kb">500KB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="text-sm font-medium text-gray-700">添加水印</label>
+                      <Switch defaultChecked />
+                    </div>
+                    <Select defaultValue="bottom-right">
+                      <SelectTrigger className="bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bottom-right">右下角</SelectItem>
+                        <SelectItem value="bottom-left">左下角</SelectItem>
+                        <SelectItem value="center">居中</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 
-                <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-4 max-h-64 overflow-y-auto border">
-                  <p className="text-sm text-gray-600 mb-4 flex items-center">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    从公众号历史文章中选择（最近30篇）
-                  </p>
-                  <div className="space-y-3">
-                    {recentArticles.map((article) => (
-                      <div key={article.title} className="flex items-center space-x-3 p-3 bg-white/80 rounded-lg hover:bg-white transition-colors">
-                        <Checkbox 
-                          checked={selectedArticles.includes(article.title)}
-                          onCheckedChange={() => toggleArticle(article.title)}
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{article.title}</p>
-                          <p className="text-xs text-gray-500">{article.date} · {article.views} 阅读</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Image Settings */}
-          <Card className="shadow-xl bg-white/90 backdrop-blur-sm border-0">
-            <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
-              <CardTitle className="flex items-center text-xl">
-                <Image className="w-6 h-6 mr-3 text-orange-600" />
-                图片处理
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl">
                 <div>
-                  <Label className="text-sm font-medium text-gray-800">自动压缩</Label>
-                  <p className="text-xs text-gray-600">减少图片大小，提升加载速度</p>
-                </div>
-                <Switch 
-                  checked={imageSettings.autoCompress}
-                  onCheckedChange={(checked) => setImageSettings(prev => ({ ...prev, autoCompress: checked }))}
-                />
-              </div>
-
-              {imageSettings.autoCompress && (
-                <div>
-                  <Label className="text-sm font-medium text-gray-700">目标大小</Label>
-                  <Select value={imageSettings.targetSize} onValueChange={(value) => setImageSettings(prev => ({ ...prev, targetSize: value }))}>
-                    <SelectTrigger className="mt-2 bg-white/80">
+                  <label className="text-sm font-medium text-gray-700 mb-3 block">图床选择</label>
+                  <Select defaultValue="smms">
+                    <SelectTrigger className="bg-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="100KB">100KB</SelectItem>
-                      <SelectItem value="200KB">200KB</SelectItem>
-                      <SelectItem value="500KB">500KB</SelectItem>
-                      <SelectItem value="1MB">1MB</SelectItem>
+                      <SelectItem value="smms">SM.MS免费图床</SelectItem>
+                      <SelectItem value="qiniu">七牛云</SelectItem>
+                      <SelectItem value="aliyun">阿里云OSS</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              )}
+              </CardContent>
+            </Card>
+          </div>
 
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
-                <div>
-                  <Label className="text-sm font-medium text-gray-800">添加水印</Label>
-                  <p className="text-xs text-gray-600">保护图片版权</p>
-                </div>
-                <Switch 
-                  checked={imageSettings.watermark}
-                  onCheckedChange={(checked) => setImageSettings(prev => ({ ...prev, watermark: checked }))}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm font-medium text-gray-700">图床选择</Label>
-                <Select value={imageSettings.imageHost} onValueChange={(value) => setImageSettings(prev => ({ ...prev, imageHost: value }))}>
-                  <SelectTrigger className="mt-2 bg-white/80">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="smms">SM.MS免费图床</SelectItem>
-                    <SelectItem value="qiniu">七牛云</SelectItem>
-                    <SelectItem value="aliyun">阿里云OSS</SelectItem>
-                    <SelectItem value="tencent">腾讯云COS</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-xl border border-blue-200">
-                <div className="flex items-center text-sm text-blue-800 mb-2">
-                  <Settings className="w-4 h-4 mr-2" />
-                  <span className="font-medium">本月图片上传：23/500张</span>
-                </div>
-                <div className="w-full bg-blue-200 rounded-full h-3">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500" style={{ width: '4.6%' }}></div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Preview Section */}
-        <Card className="shadow-xl bg-white/90 backdrop-blur-sm border-0">
-          <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-t-lg">
-            <CardTitle className="text-2xl flex items-center">
-              <Eye className="w-6 h-6 mr-3 text-indigo-600" />
-              发布预览
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-8">
-            <div className="grid md:grid-cols-3 gap-6">
-              {selectedPlatforms.wechat && (
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-green-500/25">
-                      <MessageCircle className="w-5 h-5 text-white" />
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Preview */}
+            <Card className="shadow-sm border border-gray-200">
+              <CardHeader className="bg-gray-50 border-b border-gray-200">
+                <CardTitle className="flex items-center text-gray-900">
+                  <Eye className="w-5 h-5 mr-2 text-blue-600" />
+                  发布预览
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div className="text-sm">
+                    <div className="font-medium text-gray-900 mb-2">选中平台：</div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedPlatforms.map(platformId => {
+                        const platform = platforms.find(p => p.id === platformId)
+                        return platform ? (
+                          <Badge key={platformId} className="bg-blue-100 text-blue-800">
+                            {platform.name}
+                          </Badge>
+                        ) : null
+                      })}
                     </div>
-                    <span className="font-bold text-lg">公众号</span>
-                    <CheckCircle className="w-5 h-5 text-green-600 ml-auto" />
                   </div>
-                  <div className="text-sm text-gray-700 space-y-2">
-                    <p className="flex items-center">
-                      <Zap className="w-4 h-4 mr-2 text-green-600" />
-                      排版样式：{wechatSettings.style === 'default' ? '默认样式' : '技术极客'}
-                    </p>
-                    <p className="flex items-center">
-                      <Sparkles className="w-4 h-4 mr-2 text-green-600" />
-                      精选推荐：{selectedArticles.length}篇文章
-                    </p>
-                    <p className="flex items-center">
-                      <Image className="w-4 h-4 mr-2 text-green-600" />
-                      图片处理：已优化
-                    </p>
+                  
+                  <div className="text-sm">
+                    <div className="font-medium text-gray-900 mb-2">精选文章：</div>
+                    <div className="text-gray-600">{selectedArticles.length} 篇已选择</div>
                   </div>
-                </div>
-              )}
-
-              {selectedPlatforms.zhihu && (
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-6 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-blue-500/25">
-                      <BookOpen className="w-5 h-5 text-white" />
+                  
+                  <div className="text-sm">
+                    <div className="font-medium text-gray-900 mb-2">排版样式：</div>
+                    <div className="text-gray-600">
+                      {selectedStyle === 'default' && '默认样式'}
+                      {selectedStyle === 'tech' && '技术极客'}
+                      {selectedStyle === 'business' && '商务简约'}
+                      {selectedStyle === 'creative' && '创意文艺'}
                     </div>
-                    <span className="font-bold text-lg">知乎</span>
-                    <CheckCircle className="w-5 h-5 text-blue-600 ml-auto" />
-                  </div>
-                  <div className="text-sm text-gray-700 space-y-2">
-                    <p className="flex items-center">
-                      <Code className="w-4 h-4 mr-2 text-blue-600" />
-                      格式：Markdown转换
-                    </p>
-                    <p className="flex items-center">
-                      <Sparkles className="w-4 h-4 mr-2 text-blue-600" />
-                      代码高亮：已优化
-                    </p>
-                    <p className="flex items-center">
-                      <Image className="w-4 h-4 mr-2 text-blue-600" />
-                      图片链接：已转换
-                    </p>
                   </div>
                 </div>
-              )}
+              </CardContent>
+            </Card>
 
-              {selectedPlatforms.juejin && (
-                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-200 rounded-xl p-6 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-indigo-500/25">
-                      <Code className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-bold text-lg">掘金</span>
-                    <CheckCircle className="w-5 h-5 text-indigo-600 ml-auto" />
-                  </div>
-                  <div className="text-sm text-gray-700 space-y-2">
-                    <p className="flex items-center">
-                      <FileText className="w-4 h-4 mr-2 text-indigo-600" />
-                      格式：技术文档格式
-                    </p>
-                    <p className="flex items-center">
-                      <Code className="w-4 h-4 mr-2 text-indigo-600" />
-                      代码块：语法高亮
-                    </p>
-                    <p className="flex items-center">
-                      <Target className="w-4 h-4 mr-2 text-indigo-600" />
-                      标签：自动添加
-                    </p>
+            {/* Actions */}
+            <Card className="shadow-sm border border-gray-200">
+              <CardContent className="p-6 space-y-4">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6">
+                  <Eye className="w-5 h-5 mr-2" />
+                  预览各平台效果
+                </Button>
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-lg py-6">
+                  <Share2 className="w-5 h-5 mr-2" />
+                  开始发布
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Stats */}
+            <Card className="shadow-sm border-2 border-blue-200 bg-blue-50">
+              <CardHeader>
+                <CardTitle className="flex items-center text-blue-900">
+                  <Zap className="w-5 h-5 mr-2" />
+                  效率统计
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-1">3分钟</div>
+                  <div className="text-sm text-gray-600">预计发布时间</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-1">27分钟</div>
+                  <div className="text-sm text-gray-600">为您节省时间</div>
+                </div>
+                <div className="text-center pt-4 border-t border-blue-200">
+                  <div className="text-sm text-blue-700 font-medium">
+                    相比传统方式提升 90% 效率
                   </div>
                 </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Action Buttons */}
-        <div className="flex justify-center">
-          <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-6 text-lg rounded-2xl shadow-2xl shadow-purple-500/25 group">
-            <Share2 className="w-6 h-6 mr-3" />
-            开始发布到所选平台
-            <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-          </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
